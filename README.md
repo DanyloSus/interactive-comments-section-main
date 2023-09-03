@@ -2,6 +2,7 @@
 
 from *www.frontendmentor.io*
 
-- [ ] Desktop Design
+- [x] Desktop Design
+- [ ] Functional
 - [ ] Relative Design
 - [ ] Animations
