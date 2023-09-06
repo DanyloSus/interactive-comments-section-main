@@ -1,4 +1,25 @@
+import { useDispatch } from "react-redux";
 import dataMain from "../data.json";
+import {
+  addScoreReply,
+  deleteReplyPost,
+  decreaseScoreReply,
+} from "../features/postsSlice";
+
+interface CommentObject {
+  id: number;
+  content: string;
+  createdAt: string;
+  score: number;
+  user: {
+    image: {
+      png: string;
+      webp: string;
+    };
+    username: string;
+  };
+  replies: object;
+}
 
 interface RepliesObject {
   id: number;
@@ -17,17 +38,42 @@ interface RepliesObject {
 
 interface RepliesProps {
   data: RepliesObject;
+  commData: CommentObject;
 }
 
-const Replies = ({ data }: RepliesProps) => {
+const Replies = ({ data, commData }: RepliesProps) => {
+  const dispatch = useDispatch();
+
+  const useOnDelete = (cId: string | number, rId: string | number) => {
+    console.log(cId, rId);
+    dispatch(deleteReplyPost({ cId, rId }));
+  };
+
+  const useOnAddScore = (commId: string | number, replId: string | number) => {
+    dispatch(addScoreReply({ commId, replId }));
+  };
+
+  const useOnDecreaseScore = (
+    commId: string | number,
+    replId: string | number
+  ) => {
+    dispatch(decreaseScoreReply({ commId, replId }));
+  };
+
   return (
     <div className="flex p-6 bg-very-light-gray rounded-lg gap-6">
       <div className="w-10 h-[100px] bg-light-grayish-blue rounded-xl flex flex-col justify-around text-center overflow-hidden">
-        <button className="text-xl text-grayish-blue w-full h-full hover:bg-grayish-blue hover:text-dark-blue  transition-colors">
+        <button
+          className="text-xl text-grayish-blue w-full h-full hover:bg-grayish-blue hover:text-dark-blue  transition-colors"
+          onClick={() => useOnAddScore(commData.id, data.id)}
+        >
           +
         </button>
         <h2 className="font-bold text-xl w-full h-full">{data.score}</h2>
-        <button className="text-xl text-grayish-blue hover:bg-grayish-blue hover:text-dark-blue w-full h-full transition-colors">
+        <button
+          className="text-xl text-grayish-blue hover:bg-grayish-blue hover:text-dark-blue w-full h-full transition-colors"
+          onClick={() => useOnDecreaseScore(commData.id, data.id)}
+        >
           -
         </button>
       </div>
@@ -52,7 +98,10 @@ const Replies = ({ data }: RepliesProps) => {
           </div>
           {data.user.username === dataMain.currentUser.username ? (
             <div className="flex gap-3">
-              <p className="text-soft-red flex items-center gap-2 font-bold cursor-pointer">
+              <p
+                className="text-soft-red flex items-center gap-2 font-bold cursor-pointer"
+                onClick={() => useOnDelete(commData.id, data.id)}
+              >
                 <img src="./icon-delete.svg" alt="icon delete" /> Delete
               </p>
               <p className="text-moderate-blue flex items-center gap-2 font-bold cursor-pointer">
