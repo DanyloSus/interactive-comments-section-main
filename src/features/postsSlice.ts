@@ -139,16 +139,16 @@ const postsSlice = createSlice({
       } else if (
         state.currentUser.disliked.includes(action.payload.replId.toString())
       ) {
-        state.currentUser.liked.push(action.payload.toString());
+        state.currentUser.liked.push(action.payload.replId.toString());
         state.currentUser.disliked.splice(
-          state.currentUser.disliked.indexOf(action.payload.toString()),
+          state.currentUser.disliked.indexOf(action.payload.replId.toString()),
           1
         );
         state.comments[commentId].replies[replyId].score += 2;
       } else {
         state.currentUser.liked.push(action.payload.replId.toString());
         state.currentUser.disliked.splice(
-          state.currentUser.liked.indexOf(action.payload.toString()),
+          state.currentUser.liked.indexOf(action.payload.replId.toString()),
           1
         );
         state.comments[commentId].replies[replyId].score += 1;
@@ -176,7 +176,9 @@ const postsSlice = createSlice({
           1
         );
         state.comments[commentId].replies[replyId].score += 1;
-      } else if (state.currentUser.liked.includes(action.payload.toString())) {
+      } else if (
+        state.currentUser.liked.includes(action.payload.replId.toString())
+      ) {
         state.currentUser.disliked.push(action.payload.replId.toString());
         state.currentUser.liked.splice(
           state.currentUser.liked.indexOf(action.payload.replId.toString()),

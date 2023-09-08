@@ -80,7 +80,7 @@ const Comment = ({ data }: CommentProps) => {
     <div className="flex p-6 bg-very-light-gray rounded-lg gap-6">
       <div className="w-10 h-[100px] bg-light-grayish-blue rounded-xl flex flex-col justify-around text-center overflow-hidden">
         <button
-          className={`text-xl w-full h-full transition-colors  ${
+          className={`text-xl w-full h-full transition-colors ${
             dataMain.currentUser.liked.includes(data.id.toString())
               ? "bg-grayish-blue text-dark-blue"
               : "hover:bg-grayish-blue hover:text-dark-blue text-grayish-blue"

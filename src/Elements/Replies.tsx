@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import dataMain from "../data.json";
 import {
   addScoreReply,
@@ -19,6 +19,29 @@ interface CommentObject {
     username: string;
   };
   replies: object;
+}
+
+interface PostsObject {
+  comments: {
+    id: number;
+    content: string;
+    createdAt: string;
+    score: number;
+    user: {
+      image: {
+        png: string;
+        webp: string;
+      };
+      username: string;
+    };
+    replies: RepliesObject[];
+  }[];
+  currentUser: {
+    image: { png: string; webp: string };
+    username: string;
+    liked: string[];
+    disliked: string[];
+  };
 }
 
 interface RepliesObject {
@@ -42,6 +65,8 @@ interface RepliesProps {
 }
 
 const Replies = ({ data, commData }: RepliesProps) => {
+  const dataMain: PostsObject = useSelector((state: any) => state.posts);
+
   const dispatch = useDispatch();
 
   const useOnDelete = (cId: string | number, rId: string | number) => {
@@ -64,14 +89,22 @@ const Replies = ({ data, commData }: RepliesProps) => {
     <div className="flex p-6 bg-very-light-gray rounded-lg gap-6">
       <div className="w-10 h-[100px] bg-light-grayish-blue rounded-xl flex flex-col justify-around text-center overflow-hidden">
         <button
-          className="text-xl text-grayish-blue w-full h-full hover:bg-grayish-blue hover:text-dark-blue  transition-colors"
+          className={`text-xl text-grayish-blue w-full h-full hover:bg-grayish-blue hover:text-dark-blue  transition-colors ${
+            dataMain.currentUser.liked.includes(data.id.toString())
+              ? "bg-grayish-blue text-dark-blue"
+              : "hover:bg-grayish-blue hover:text-dark-blue text-grayish-blue"
+          }`}
           onClick={() => useOnAddScore(commData.id, data.id)}
         >
           +
         </button>
         <h2 className="font-bold text-xl w-full h-full">{data.score}</h2>
         <button
-          className="text-xl text-grayish-blue hover:bg-grayish-blue hover:text-dark-blue w-full h-full transition-colors"
+          className={`text-xl text-grayish-blue hover:bg-grayish-blue hover:text-dark-blue w-full h-full transition-colors ${
+            dataMain.currentUser.disliked.includes(data.id.toString())
+              ? "bg-grayish-blue text-dark-blue"
+              : "hover:bg-grayish-blue hover:text-dark-blue text-grayish-blue"
+          }`}
           onClick={() => useOnDecreaseScore(commData.id, data.id)}
         >
           -
