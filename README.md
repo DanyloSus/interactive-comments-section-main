@@ -3,6 +3,8 @@
 from *www.frontendmentor.io*
 
 - [x] Desktop Design
-- [ ] Functional
-- [ ] Relative Design
-- [ ] Animations
+- [x] Functional
+- [x] Relative Design
+- [x] Animations
+
+site https://danylosus.github.io/interactive-comments-section-main/
